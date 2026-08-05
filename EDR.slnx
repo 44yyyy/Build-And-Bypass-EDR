@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="MemoryDemo/MemoryDemo.vcxproj" Id="e80a458c-5b27-4c9b-a4c7-97d1775b6868" />
+  <Project Path="EDRConcept/EDRConcept.vcxproj" Id="226241a6-e0bf-4ac5-978b-92ff7356766a">
+    <Deploy Solution="Debug|x64" />
+  </Project>
+  <Project Path="WinEDRx86/WinEDRx86.vcxproj" Id="2bec7a18-2b8e-42b9-bd34-dfa3cfbaa4df" />
+</Solution>
