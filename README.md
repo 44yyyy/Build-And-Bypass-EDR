@@ -64,17 +64,17 @@ At this point the program was complete, but to truly understand what my program 
 
 In the raw assembly of `trampoline_hook`, I successfully found and traced the `VirtualProtect` API call. I could see that it was passing `0x40` (hex value for `PAGE_EXECUTE_READWRITE`) to unlock the memory page, then being assigned the `0xE9` (`JMP`) opcode.
 
-![Ghidra_VirtualProtect](Ghidra_1.jpg)
+![Ghidra_VirtualProtect](Screenshots/Ghidra_1.jpg)
 
-![Ghidra_JMP_WriteJump](Ghidra_2.jpg)
+![Ghidra_JMP_WriteJump](Screenshots/Ghidra_2.jpg)
 
 Now, looking at the raw assembly for the evasion trampoline in `execute_bypass`, I could clearly see the reconstruction of the 5-byte hotpatch prologue, followed immediately by the `0xE9` (`JMP`) opcode being written again to execute the jump over the sensor.
 
-![Ghidra Hotpatch and JMP](Ghidra_3.jpg)
+![Ghidra Hotpatch and JMP](Screenshots/Ghidra_3.jpg)
 
 Moving further down, I also located the exact memory address where the compiler translated the offset algebra ($Destination - Source - 5$) into CPU instructions. We can see the specific `MOV` and `SUB` instructions being used to calculate the 32-bit offset.
 
-![Ghidra Assembly Math](Ghidra_4.jpg)
+![Ghidra Assembly Math](Screenshots/Ghidra_4.jpg)
 
 According to my logic, the program appeared to be working on the surface level when ran. However, static analysis revealed the bare bones truth of what the CPU was executing. Seeing exactly what my code was doing by analyzing the exact assembly bytes the program injected into memory and the instructions that was being performed was extremely rewarding.
 
