@@ -6,11 +6,13 @@ This project documents my learnings on how Endpoint Detection and Response (EDR)
 I wanted to apply the concepts I learned in my recent computer systems course (shoutout CS300!) to topics more focused on cybersecurity, while also reinforcing my programming skills by building a project from scratch in C++ (x86). My main goal was to explore and understand the low-level memory interactions and the raw assembly mechanics required to manipulate process execution flow. The project is separated into three distinct phases.
 
 ## 1. Functions as Raw Memory (`MemoryDemo.cpp`)
-A brief refresher on one of the core concepts that I learned in my course: **Everything is bytes!** I needed to view functions as sequential bytes of machine code, living within a process's virtual memory.
+A brief refresher on one of the core concepts that I learned in my course: **Everything is bytes!** I needed to view functions as sequential bytes of machine code, living within the virtual memory of a process.
 
 In `MemoryDemo.cpp`, I wrote a basic `target()` function that adds two integers. I wanted to locate this function in memory and read its bytes. I cast the function's execution address into a `void*`, then into an `unsigned char*` for smooth pointer arithmetic. After that, by treating the function address as an array (**Pointer/Array Duality!**), I iterated through the first 15 bytes of the function and printed their hexadecimal values to the console.
 
-**Takeaway:** Executable code is just data residing in memory. If we can read these bytes and acquire the right permissions, we can overwrite them.
+![Running MemoryDemo.cpp](Screenshots/MemoryDemo.jpg)
+
+Executable code is just data residing in memory. If we can read these bytes and acquire the right permissions, we can overwrite them.
 
 ## 2. Proof of Concept: EDR Hooking (`EDRConcept.cpp`)
 Since we can read memory, the next step was to simulate an EDR sensor by intercepting a function call. To achieve this, I decided to learn about and implement an inline hook.
@@ -23,7 +25,9 @@ $$Offset = Destination - Source - 5$$
 
 If the proxy decides a payload is safe, it needs to hop on a trampoline to resume normal execution. I allocated new executable memory using `VirtualAlloc`, copied the original stolen bytes into it, and then appended a jump back to the original function (offset by 5 bytes).
 
-**Result:** The proxy successfully intercepted standard calls and inspected the string payloads. Malicious payloads were blocked and safe inputs were forwarded to the trampoline to seamlessly continue regular execution. 
+![Running EDRConcept.cpp](Screenshots/EDRConcept.jpg)
+
+The proxy successfully intercepted standard calls and inspected the string payloads. Malicious payloads were blocked and safe inputs were forwarded to the trampoline to seamlessly continue regular execution. 
 
 ## 3. Hooking Windows & Evasion (`WinEDRx86.cpp`)
 Finally, I transitioned from hooking a custom function to an actual Windows OS function (`MessageBoxA` in `user32.dll`), then used the same concepts I learned so far to go the other way, building an offensive bypass to defeat my own sensor.
@@ -42,6 +46,14 @@ Instead, I decided to rebuild a clean and unhooked version of the API in a new m
 
 Right after the prologue, I calculated a new relative jump instruction. This jump was designed to leap directly into the original API, landing exactly at byte 6, which would smoothly bypass the EDR's 5-byte trap. Finally, I cast the evasion trampoline into a callable function pointer and passed my malicious arguments into it.
 
-**Result:** The program successfully bypassed the memory hook, passing the malicious payload directly to the operating system without detection.
+![Running WinEDRx86.cpp](Screenshots/WinEDRx86_1.jpg)
+
+![Running WinEDRx86.cpp](Screenshots/WinEDRx86_2.jpg)
+
+![Running WinEDRx86.cpp](Screenshots/WinEDRx86_3.jpg)
+
+The program successfully bypassed the memory hook, passing the malicious payload directly to the operating system without detection.
+
+## 4. Ghidra
 
 ## Conclusion
