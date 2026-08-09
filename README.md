@@ -56,6 +56,16 @@ Right after the prologue, I calculated a new relative jump instruction. This jum
 
 The program successfully bypassed the memory hook, passing the malicious payload directly to the operating system without detection.
 
-## 4. Ghidra
+## 4. Static Binary Analysis/Reverse Engineering (Ghidra)
+
+At this point, with the completed program, I wanted to truly understand what my program was doing and verify that my logic was manipulating memory correctly. To also introduce myself to binary analysis and reverse engineering, I imported the final compiled executable into Ghidra to analyze the raw x86 assembly.
+
+In the decompiled view of `trampoline_hook`, I successfully found and traced the `VirtualProtect` API call. I could see that it was passing `0x40` (hex value for `PAGE_EXECUTE_READWRITE`) to unlock the memory page, then being assigned the `0xE9` (`JMP`) opcode.
+
+Now, looking at the assembly for the evasion trampoline in `execute_bypass`, I saw `0xE9` (`JMP`) being written again to execute the jump over the sensor, but I also located the exact memory address where the compiler translated my C++ algebra ($Destination - Source - 5$) into CPU instructions. I was able to see the specific `MOV` and `SUB` hardware register commands used to calculate the 32-bit relative distance.
+
+While C++ abstracts memory management, static analysis reveals the absolute truth of what the CPU is executing. Seeing the exact assembly bytes my code injected into the process memory solidified my understanding of how EDRs and malware manipulate execution flow at the bare-metal level.
 
 ## Conclusion
+
+Ever since taking my first computer systems course, I've been interested in looking at how programs and applications operate at a low level, down to its bytes in memory. in This project bridged the gap between high-level C++ programming and low-level reverse engineering. By building both the sensor and the evasion mechanics by hand, I gained a profound appreciation for Windows memory architecture, process isolation, and the continuous cat-and-mouse game between threat actors and cybersecurity defenses.
