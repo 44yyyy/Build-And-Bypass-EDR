@@ -80,7 +80,7 @@ According to my logic, the program appeared to be working on the surface level w
 
 ## Conclusion
 
-Recently, I took my first computer systems course. Ever since then, I've been interested in looking at how programs and applications operate at a low level, down to its bytes and assembly instructions. This project bridged a frustrating gap I felt between my lower-level computer science coursework from my degree and my interest in a career in cybersecurity. Building this entire project from scratch by developing both the sensor and the evasion mechanics, getting used to the Windows kernel API by reading documentation, and solidifying my understanding of low-level memory interactions made me realize again why I'm constantly enthralled by the cybersecurity space. The game between attackers and defenders drives constant innovation and evolution, which means that for me, there will always be new things to learn and play with.
+Recently, I took my first computer systems course. Ever since then, I've been interested in looking at how programs and applications operate at a low level, down to its bytes and assembly instructions. This project bridged a frustrating gap I felt between my lower-level computer science coursework from my degree and my interest in a career in cybersecurity. Building this entire project from scratch by developing both the sensor and the evasion mechanics, getting used to the Windows kernel API by reading documentation, and solidifying my understanding of low-level memory interactions made me realize again why I'm constantly enthralled by the cybersecurity space. The game between attackers and defenders drives constant innovation and evolution, which means that for me, there will always be new things to learn and play with. Thank you for reading!
 
 ### Key Concepts Learned
 *   **EDR Mechanics:** Intercepting and inspecting API calls via inline hooking.
@@ -88,3 +88,11 @@ Recently, I took my first computer systems course. Ever since then, I've been in
 *   **Low-Level Memory Management:** Manipulating memory page permissions (e.g., `VirtualProtect`, `PAGE_EXECUTE_READWRITE`) and allocating executable virtual memory.
 *   **x86 Assembly & CPU Execution:** Calculating relative jump offsets and navigating assembly instruction boundaries.
 *   **Reverse Engineering:** Static binary analysis and reverse engineering with Ghidra.
+
+## Contact
+
+Email: <johnyang4406@gmail.com>, <john_s_yang@brown.edu>
+
+LinkedIn: <https://www.linkedin.com/in/john-yang-747726292/>
+
+HackTheBox: <https://profile.hackthebox.com/profile/019c423f-9b9b-708f-8b31-55983b89dddd?utm_medium=copy_url/>
