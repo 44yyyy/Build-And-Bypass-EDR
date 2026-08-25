@@ -59,6 +59,14 @@ Right after the prologue, I calculated a new relative jump instruction. This jum
 
 The program successfully bypassed the memory hook, passing the malicious payload directly to the operating system without detection.
 
+### Mapping to MITRE ATT&CK
+To contextualize this project so far within a real-world cybersecurity framework, the techniques used to build both the sensor and the evasion mechanics map directly to the **MITRE ATT&CK** matrix:
+
+*   **API Hooking (T1056.004):** MITRE categorizes this under Credential Access (malware often uses hooks to steal keystrokes or data), but this project uses the same inline hooking mechanism defensively to intercept and inspect API calls. 
+*   **Defense Evasion (TA0005):** The main tactic used in the `execute_bypass` function. 
+    *   **Native API (T1106):** The bypass avoids standard execution flow by reconstructing the hotpatch prologue and interacting directly with memory.
+    *   **Impair Defenses: Disable or Modify Tools (T1562.001):** The evasion trampoline effectively "disables" the simulated EDR sensor by routing execution flow directly past its memory hooks, allowing malicious payloads to execute without detection.
+
 ## 4. Static Binary Analysis/Reverse Engineering (Ghidra)
 At this point the program was complete, but to truly understand what my program was doing and verify that my logic was manipulating memory correctly, I imported the final compiled executable into Ghidra to analyze the raw x86 assembly.
 
