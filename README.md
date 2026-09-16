@@ -28,7 +28,7 @@ I learned that by default, Windows protects executable memory pages. With the `V
 
 One major challenge I encountered here was figuring out exactly how many bytes to take for the trampoline. I initially tried taking exactly 5 bytes (the size of our `JMP` instruction), but because x86 instructions do not have fixed sizes, this cut a multi-byte assembly instruction in half after the program was compiled. When the trampoline tried to execute the bytes, the CPU crashed. By analyzing the raw assembly, I figured out I needed to copy exactly 8 bytes to reach a clean boundary.
 
-With this issue solved, I allocated new executable memory using `VirtualAlloc`, copied the original stolen bytes into it, and then appended a jump back to the original function (offset by 5 bytes).
+With this issue solved, I allocated new executable memory using `VirtualAlloc`, copied the original stolen bytes into it, and then appended a jump back to the original function (offset by 8 bytes).
 
 ![Running EDRConcept.cpp](Screenshots/EDRConcept.jpg)
 
